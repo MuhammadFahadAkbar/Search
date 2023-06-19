@@ -1,6 +1,11 @@
 import axios from "axios";
+import AppBar from "@mui/material/AppBar";
+import { Container } from "@mui/material";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import Pagination from "./Components/Pagination";
+
 export interface ProductType {
   node: {
     id: string;
@@ -34,10 +39,17 @@ const App = () => {
   }, []);
 
   return (
-    <>
-      <h1>Pagination</h1>
+    <Container maxWidth="lg">
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Pagination
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <br />
       <Pagination products={products} />
-    </>
+    </Container>
   );
 };
 
