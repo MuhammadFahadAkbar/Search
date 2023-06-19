@@ -1,7 +1,12 @@
 import axios from "axios";
+import AppBar from "@mui/material/AppBar";
+import { Container } from "@mui/material";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
+import Pagination from "./Components/Pagination";
 
-interface Product {
+export interface ProductType {
   node: {
     id: string;
     title: string;
@@ -25,22 +30,7 @@ interface Product {
 }
 
 const App = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const totalpages = products.length / 5;
-
-  const [pageNumber, setPageNumber] = useState(1);
-
-  const handleNextClick = () => {
-    setPageNumber((prevPage) => {
-      return prevPage < totalpages ? prevPage + 1 : prevPage;
-    });
-  };
-
-  const handlePreviousClick = () => {
-    setPageNumber((prevPage) => {
-      return prevPage > 1 ? prevPage - 1 : prevPage;
-    });
-  };
+  const [products, setProducts] = useState<ProductType[]>([]);
 
   useEffect(() => {
     axios("http://localhost:4000/edges").then(({ data }) => {
@@ -48,28 +38,18 @@ const App = () => {
     });
   }, []);
 
-  const currentProducts = products.slice((pageNumber - 1) * 5, pageNumber * 5);
-
   return (
-    <>
-      <h1>Pagination</h1>
-      <div>
-        <ul>
-          {currentProducts.map((product) => (
-            <li>{product.node.title}</li>
-          ))}
-        </ul>
-        <div>
-          {pageNumber > 1 && (
-            <button onClick={handlePreviousClick}>Previous</button>
-          )}
-          <p>{pageNumber}</p>
-          {pageNumber !== totalpages && (
-            <button onClick={handleNextClick}>Next</button>
-          )}
-        </div>
-      </div>
-    </>
+    <Container maxWidth="lg">
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Pagination
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <br />
+      <Pagination products={products} />
+    </Container>
   );
 };
 
