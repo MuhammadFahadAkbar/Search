@@ -118,7 +118,13 @@ const App = () => {
         </Toolbar>
       </AppBar>
       <br />
-      <Pagination products={products} />
+      {products.length != 0 ? (
+        <Pagination products={products} />
+      ) : (
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          No Products Found
+        </Typography>
+      )}
     </Container>
   );
 };
