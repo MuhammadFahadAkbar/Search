@@ -76,10 +76,25 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const App = () => {
   const [products, setProducts] = useState<ProductType[]>([]);
+  const [allProducts, setAllProducts] = useState<ProductType[]>([]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length > 1) {
+      const searchedProducts = allProducts.filter((product) => {
+        return product.node.title
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase());
+      });
+      setProducts(searchedProducts);
+    } else {
+      setProducts(allProducts);
+    }
+  };
 
   useEffect(() => {
     axios("http://localhost:4000/edges").then(({ data }) => {
       setProducts(data);
+      setAllProducts(data);
     });
   }, []);
 
@@ -97,6 +112,7 @@ const App = () => {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              onChange={handleChange}
             />
           </Search>
         </Toolbar>
