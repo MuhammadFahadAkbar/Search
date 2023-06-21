@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductType } from "../App";
 import { Box, Grid } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -12,9 +12,9 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 const Pagination = ({ products }: { products: ProductType[] }) => {
   const productsPerPage = 8;
 
-  const totalPages = products.length / productsPerPage;
+  const totalPages = Math.ceil(products.length / productsPerPage);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  let [currentPage, setCurrentPage] = useState(1);
 
   const handleNextClick = () => {
     setCurrentPage((prevPage) => {
@@ -32,6 +32,10 @@ const Pagination = ({ products }: { products: ProductType[] }) => {
     (currentPage - 1) * productsPerPage,
     currentPage * productsPerPage
   );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [products]);
 
   return (
     <div>
